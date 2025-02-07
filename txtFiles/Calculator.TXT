@@ -1,0 +1,145 @@
+# junior devloper
+import math
+
+print("Hello! This is a simple calculator.")
+
+def print_menu():
+    print("""
+    1. Add
+    2. Subtract
+    3. Multiply
+    4. Divide
+    5. Modulus
+    6. Floor Division
+    7. Power
+    8. Square Root
+    9. Logarithm
+    10. Factorial
+    """)
+
+def calculate(op, num1, num2=None):
+    if op == 1:
+        return num1 + num2
+    elif op == 2:
+        return num1 - num2
+    elif op == 3:
+        return num1 * num2
+    elif op == 4:
+        if num2 == 0:
+            return "Error: Cannot divide by zero!"
+        return num1 / num2
+    elif op == 5:
+        return num1 % num2
+    elif op == 6:
+        return num1 // num2
+    elif op == 7:
+        return num1 ** num2
+    elif op == 8:
+        return math.sqrt(num1)
+    elif op == 9:
+        return math.log(num1)
+    elif op == 10:
+        if num1 < 0:
+            return "Error: Factorial is not possible for negative numbers."
+        return math.factorial(int(num1))
+    else:
+        return "Invalid operator!"
+
+while True:
+    print_menu()
+    try:
+        operation = int(input("Pick an operation (1-10): "))
+        num1 = float(input("Enter the first number: "))
+
+        if operation in [1, 2, 3, 4, 5, 6, 7]:
+            num2 = float(input("Enter the second number: "))
+            result = calculate(operation, num1, num2)
+        else:
+            result = calculate(operation, num1)
+
+        print("The result is:", result)
+
+    except ValueError:
+        print("Oops! Please enter valid numbers.")
+    except Exception as e:
+        print(f"Something went wrong: {e}")
+
+
+# professional developer
+import math
+
+def print_menu():
+    """Print the calculator menu."""
+    print(r"""
+    1. Addition: +
+    2. Subtraction: -
+    3. Multiplication: *
+    4. Division: /
+    5. Modulus: %
+    6. Floor Division: //
+    7. Power: **
+    8. Square Root: sqrt
+    9. Logarithm: log
+    10. Factorial: fact
+    """)
+
+def handle_binary_operations(op: str, num1: float):
+    """Handle operations that only require one number."""
+    if op in ['sqrt', '8']:
+        return math.sqrt(num1)
+    elif op in ['log', '9']:
+        return math.log(num1)
+    elif op in ['fact', '10']:
+        if num1 < 0:
+            return "Factorial is undefined for negative numbers"
+        return math.factorial(int(num1))
+    else:
+        return "Invalid operator"
+
+def handle_two_number_operations(op: str, num1: float, num2: float):
+    """Handle operations that require two numbers."""
+    if op in ['+', '1']:
+        return num1 + num2
+    elif op in ['-', '2']:
+        return num1 - num2
+    elif op in ['*', '3']:
+        return num1 * num2
+    elif op in ['/', '4']:
+        if num2 == 0:
+            return "Cannot divide by zero"
+        return num1 / num2
+    elif op in ['%', '5']:
+        return num1 % num2
+    elif op in ['//', '6']:
+        return num1 // num2
+    elif op in ['^', '7']:
+        return num1 ** num2
+    else:
+        return "Invalid operator"
+
+def main():
+    """Main calculator loop."""
+    print("Hello, this calculator performs various functions.")
+
+    while True:
+        print_menu()
+        
+        try:
+            num1 = float(input("Enter first number: "))
+            op = input("Enter the operator number or symbol: ").strip()
+            
+            if op in ['sqrt', '8', 'log', '9', 'fact', '10']:
+                result = handle_binary_operations(op, num1)
+                print(f"Result: {result}")
+            else:
+                num2 = float(input("Enter second number: "))
+                result = handle_two_number_operations(op, num1, num2)
+                print(f"Result: {result}")
+                
+        except ValueError:
+            print("Please enter valid numbers.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    main()
