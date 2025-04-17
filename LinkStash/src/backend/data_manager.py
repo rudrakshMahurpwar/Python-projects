@@ -1,12 +1,20 @@
 from pymongo import MongoClient
 from datetime import datetime
 import bson
+import os
+
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 
 class LinkManager:
     def __init__(self):
         try:
-            self.client = MongoClient("mongodb://localhost:27017/")
+            self.password = os.environ.get("MONGO_PWD")
+            self.client = MongoClient(
+                f"mongodb+srv://Rudraksh:{self.password}@cluster0.1hsclqh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+            )
             self.db = self.client["linkstash"]
             self.collection = self.db["links"]
             self.collection.create_index("url")

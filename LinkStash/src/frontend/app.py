@@ -1,3 +1,4 @@
+from email import header
 import os
 import sys
 
@@ -5,7 +6,6 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 import customtkinter as ctk
-from datetime import datetime
 from src.backend.data_manager import LinkManager
 from frontend.ui_components import create_link_frame, create_edit_popup
 from utils import shorten_url, export_to_csv
@@ -33,15 +33,12 @@ class LinkStashApp:
         header_frame = ctk.CTkFrame(self.root)
         header_frame.pack(fill="x", pady=5)
 
-        inner_frame = ctk.CTkFrame(header_frame)
-        inner_frame.pack(expand=True, fill="x")
-
         welcome_label = ctk.CTkLabel(
-            inner_frame,
+            header_frame,
             text="Welcome to LinkStash! Your One Stop Link Manager!",
             text_color=("black", "white"),
         )
-        welcome_label.pack(expand=True)
+        welcome_label.pack(side="left", padx=5)
 
         self.mode_switch = ctk.CTkSwitch(
             header_frame,
