@@ -1,32 +1,69 @@
 from datetime import datetime
+from tkinter import filedialog
+import webbrowser
 import csv
+import os
+
+
+def set_app_icon(window):
+    try:
+        icon_path = os.path.join(os.path.dirname(__file__), "assets", "icon.ico")
+        window.iconbitmap(default=icon_path)
+    except Exception as e:
+        print(f"[Icon Error] Could not set icon: {e}")
 
 
 def export_to_csv(links):
+    """
+    Prompts user to save a CSV file with link data.
+
+    Column order: ID, Saved At, URL, Notes
+
+    Returns:
+    - (success: bool, filename: str or None)
+    """
     if not links:
         return False, None
+
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"linkstash_export_{timestamp}.csv"
+    default_name = f"linkstash_export_{timestamp}.csv"
+
+    file_path = filedialog.asksaveasfilename(
+        defaultextension=".csv",
+        initialfile=default_name,
+        filetypes=[("CSV files", "*.csv"), ("All files", "*.*")],
+        title="Save CSV File",
+    )
+
+    if not file_path:
+        return False, None
+
     try:
-        with open(filename, mode="w", newline="", encoding="utf-8") as file:
+        with open(file_path, mode="w", newline="", encoding="utf-8") as file:
             writer = csv.writer(file)
-            writer.writerow(["ID", "URL", "Notes", "Saved At"])
+            # Header in custom order
+            writer.writerow(["ID", "Saved At", "URL", "Notes"])
             for link in links:
                 writer.writerow(
                     [
-                        link["_id"],
-                        link["url"],
-                        link["notes"],
-                        format_date(link["saved_at"]),
+                        link.get("_id", ""),
+                        format_date(link.get("saved_at", "")),
+                        link.get("url", ""),
+                        link.get("notes", ""),
                     ]
                 )
-        return True, filename
-    except Exception:
+        return True, file_path
+    except Exception as e:
+        print(f"[ERROR] CSV export failed: {e}")
         return False, None
 
 
 def shorten_url(url, max_length=50):
     return url[:max_length] + ("..." if len(url) > max_length else "")
+
+
+def open_url(url):
+    webbrowser.open(url)
 
 
 def format_date(iso_date):

@@ -1,23 +1,55 @@
-from email import header
 import os
 import sys
+from typing import TYPE_CHECKING
 
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+# Add the src directory to the system path
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "src"))
+)
 
 import customtkinter as ctk
-from src.backend.data_manager import LinkManager
+
+if TYPE_CHECKING:
+    from main import MainApp
+
+from utils import set_app_icon, shorten_url, export_to_csv
+from backend.data_manager import LinkManager
 from frontend.ui_components import create_link_frame, create_edit_popup
-from utils import shorten_url, export_to_csv
+
+# from frontend.auth_screens import LoginPage
 
 
-class LinkStashApp:
-    def __init__(self, root):
+class Misc:
+    def __init__(self, master):
+        self.master = master
+
+    def clear_frame(self):
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+    def show_next_screen(self, user_id):
+        if user_id:
+            self.clear_frame()
+            LinkStashApp(self.master, user_id).pack(fill="both", expand=True)
+        else:
+            print("User ID is required")
+
+    def log_out(self):
+        pass
+
+
+class LinkStashApp(ctk.CTkFrame):
+    def __init__(self, root, user_id="test", controller=None):
         self.root = root
+        self.controller = controller
+        print(f"Controller passed to LinkStashApp: {self.controller}")  # Debugging
+
         self.root.title("LinkStash")
-        ctk.set_appearance_mode("light")
+
+        set_app_icon(self.root)  # Set the app icon
+        ctk.set_appearance_mode(ctk.get_appearance_mode())  # system default
         try:
-            self.link_manager = LinkManager()
+            self.link_manager = LinkManager(user_id=user_id)
         except ConnectionError as e:
             ctk.CTkLabel(self.root, text=str(e), text_color="red").pack(pady=10)
             return
@@ -26,8 +58,21 @@ class LinkStashApp:
         self.root.protocol("WM_DELETE_WINDOW", self.destroy)
 
     def destroy(self):
-        self.link_manager.close()
+        try:
+            self.link_manager.close()
+        except Exception as e:
+            print(f"Error closing LinkManager: {e}")
         self.root.destroy()
+
+    def create_button(self, parent, text, command, color="blue", **kwargs):
+        return ctk.CTkButton(
+            parent,
+            text=text,
+            command=command,
+            fg_color=color,
+            hover_color=f"dark{color}",
+            **kwargs,
+        )
 
     def setup_ui(self):
         header_frame = ctk.CTkFrame(self.root)
@@ -52,9 +97,19 @@ class LinkStashApp:
         self.mode_switch.pack(side="right", padx=5)
         current_mode = ctk.get_appearance_mode()
         if current_mode == "dark":
-            self.mode_switch.select()
-        else:
             self.mode_switch.deselect()
+        else:
+            self.mode_switch.select()
+
+        # Add a logout button
+        logout_button = ctk.CTkButton(
+            header_frame,
+            text="Logout",
+            command=self.logout,
+            fg_color="red",
+            hover_color="darkred",
+        )
+        logout_button.pack(side="right", padx=10)
 
         input_frame = ctk.CTkFrame(self.root, fg_color="transparent")
         input_frame.pack(pady=10, padx=10, fill="x")
@@ -112,7 +167,7 @@ class LinkStashApp:
         export_button = ctk.CTkButton(
             search_frame,
             text="Export CSV",
-            command=self.export_to_csv,
+            command=self.export_links_to_csv,
             fg_color="green",
             hover_color="darkgreen",
             width=80,
@@ -206,6 +261,11 @@ class LinkStashApp:
         popup.destroy()
 
     def update_search(self, event=None):
+        if hasattr(self, "_search_after_id"):
+            self.root.after_cancel(self._search_after_id)
+        self._search_after_id = self.root.after(300, self._perform_search)
+
+    def _perform_search(self):
         self.search_term = self.search_entry.get().strip()
         self.refresh_links()
 
@@ -240,7 +300,15 @@ class LinkStashApp:
         self.root.update_idletasks()
         self.root.update()
 
-    def export_to_csv(self):
+    def logout(self):
+        """Handle the logout functionality."""
+        print("User logged out.")
+        if self.controller:
+            self.controller.show_login()  # Navigate to the login screen
+        else:
+            print("Controller not set. Cannot navigate to login screen.")
+
+    def export_links_to_csv(self):
         links = self.link_manager.get_links(self.search_term)
         if not links:
             error_message = (
@@ -248,23 +316,16 @@ class LinkStashApp:
                 if self.search_term
                 else "No links available to export."
             )
-            error_label = ctk.CTkLabel(
-                self.root,
-                text=error_message,
-                text_color="red",
-            )
+            error_label = ctk.CTkLabel(self.root, text=error_message, text_color="red")
             error_label.pack(pady=5)
             self.root.after(2000, error_label.destroy)
             return
 
-        success, filename = export_to_csv(links)
+        success, filename = export_to_csv(links)  # No headers argument
+
         if success:
             message = f"Exported {len(links)} {'filtered links' if self.search_term else 'links'} to {filename}"
-            success_label = ctk.CTkLabel(
-                self.root,
-                text=message,
-                text_color="green",
-            )
+            success_label = ctk.CTkLabel(self.root, text=message, text_color="green")
             success_label.pack(pady=5)
             self.root.after(2000, success_label.destroy)
         else:

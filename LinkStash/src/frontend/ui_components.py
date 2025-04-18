@@ -1,6 +1,5 @@
 import customtkinter as ctk
-import webbrowser
-from utils import shorten_url, format_date
+from utils import shorten_url, open_url, format_date
 
 
 def create_link_frame(parent, index, link, app_instance):
@@ -55,14 +54,10 @@ def create_link_frame(parent, index, link, app_instance):
     return link_frame
 
 
-def open_url(url):
-    webbrowser.open(url)
-
-
 def create_edit_popup(app_instance, link_id, current_url, current_notes):
     popup = ctk.CTkToplevel(app_instance.root)
     popup.title("Edit Link")
-    popup.geometry("400x200")
+    popup.geometry("400x250")
     popup.transient(app_instance.root)
     popup.grab_set()
 
