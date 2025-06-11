@@ -1,0 +1,4 @@
+keyboard==0.13.5
+pystray==0.19.4
+Pillow==11.2.1             # Required for pystray icons
+# PySimpleGUI==5.0.5       # Optional: for GUI-based config
