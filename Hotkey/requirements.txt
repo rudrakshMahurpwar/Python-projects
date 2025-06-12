@@ -1,4 +1,10 @@
+altgraph==0.17.4
 keyboard==0.13.5
+packaging==25.0
+pefile==2023.2.7
+pillow==11.2.1
 pystray==0.19.4
-Pillow==11.2.1             # Required for pystray icons
-# PySimpleGUI==5.0.5       # Optional: for GUI-based config
+pywin32-ctypes==0.2.3
+setuptools==80.9.0
+six==1.17.0
+wheel==0.45.1

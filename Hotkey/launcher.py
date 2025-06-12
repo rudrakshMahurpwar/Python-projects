@@ -2,6 +2,7 @@ import keyboard
 import subprocess
 import webbrowser
 import os
+import sys
 import json
 import threading
 from pystray import Icon, Menu, MenuItem
@@ -17,17 +18,59 @@ hotkey_refs = []
 
 # ==== Action Handler ====
 def handle_action(action):
-    if action.startswith("http"):
+    if ":" in action and "|" in action:
+        try:
+            browser_tag, rest = action.split(":", 1)
+            url, profile = rest.split("|", 1)
+            browser_path = get_browser_path(browser_tag.strip())
+            if not browser_path:
+                print(f"Browser not supported or path not found: {browser_tag}")
+                return
+
+            args = [browser_path]
+
+            if browser_tag.lower() in ["chrome", "brave"]:
+                args.append(f"--profile-directory={profile.strip()}")
+            elif browser_tag.lower() == "firefox":
+                args.extend(["-P", profile.strip()])
+
+            args.append(url.strip())
+            print("Launching:", args)
+
+            subprocess.Popen(args)
+            return
+        except Exception as e:
+            print("Error handling browser action:", e)
+
+    elif action.startswith("http"):
         webbrowser.open(action)
     elif os.path.isdir(action):
         os.startfile(action)
     else:
         try:
             subprocess.Popen(action, shell=True)
-
-            # subprocess.Popen(action)
         except Exception as e:
             pass
+
+
+def get_browser_path(browser_name):
+    paths = {
+        "chrome": [r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"],
+        "brave": [
+            r"C:\Users\HP\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe"
+        ],
+    }
+
+    browser_name = browser_name.lower()
+    for path in paths.get(browser_name, []):
+        if os.path.isfile(path):
+            return path
+    return None
+    platform = sys.platform
+    if platform.startswith("linux"):
+        platform = "linux"
+
+    return paths.get(browser_name.lower(), {}).get(platform)
 
 
 # ==== Register Hotkeys ====
