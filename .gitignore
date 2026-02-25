@@ -3,3 +3,11 @@ venv/
 .venv/
 **/venv/
 **/.venv/
+
+**/env.py
+env.py
+*.env
+.env.*
+
+**/__pycache__/
+.vscode/
