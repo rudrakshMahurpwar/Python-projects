@@ -1,0 +1,97 @@
+[
+    {
+        "difficulty": "easy",
+        "riddles": [
+            {
+                "riddle": "I speak without a mouth and hear without ears. I have nobody, but I come alive with the wind. What am I?",
+                "answer": "Echo"
+            },
+            {
+                "riddle": "The more of me you take, the more you leave behind. What am I?",
+                "answer": "Footsteps"
+            },
+            {
+                "riddle": "I’m tall when I’m young, and I’m short when I’m old. What am I?",
+                "answer": "Candle"
+            },
+            {
+                "riddle": "I have keys but no locks. I have space but no room. You can enter, but you can’t go outside. What am I?",
+                "answer": "Keyboard"
+            },
+            {
+                "riddle": "I am always hungry and will die if not fed, but whatever I touch will soon turn red. What am I?",
+                "answer": "Fire"
+            }
+        ]
+    },
+    {
+        "difficulty": "medium",
+        "riddles": [
+            {
+                "riddle": "I can fly without wings. I can cry without eyes. Wherever I go, darkness flies. What am I?",
+                "answer": "Cloud"
+            },
+            {
+                "riddle": "I am taken from a mine, and shut up in a wooden case, from which I am never released, yet I am used by almost every person. What am I?",
+                "answer": "Pencil lead"
+            },
+            {
+                "riddle": "The more you take from me, the bigger I get. What am I?",
+                "answer": "Hole"
+            },
+            {
+                "riddle": "I have cities but no houses, forests but no trees, and rivers but no water. What am I?",
+                "answer": "Map"
+            },
+            {
+                "riddle": "I’m often running, yet I have no legs. You can enter me, but you can’t go outside. What am I?",
+                "answer": "Water"
+            }
+        ]
+    },
+    {
+        "difficulty": "hard",
+        "riddles": [
+            {
+                "riddle": "I can be cracked, made, told, and played. What am I?",
+                "answer": "Joke"
+            },
+            {
+                "riddle": "I am not alive, but I grow; I don’t have lungs, but I need air; I don’t have a mouth, but water kills me. What am I?",
+                "answer": "Fire"
+            },
+            {
+                "riddle": "The person who makes it, sells it. The person who buys it never uses it. The person who uses it never knows they are using it. What is it?",
+                "answer": "Coffin"
+            },
+            {
+                "riddle": "I am always in front of you but can never be seen. What am I?",
+                "answer": "Future"
+            },
+            {
+                "riddle": "I can bring back the dead; make us cry, make us laugh, make us young; I am born in an instant but last a lifetime. What am I?",
+                "answer": "Memory"
+            },
+            {
+                "riddle": "I turn once, what is out will not get in. I turn again, what is in will not get out. What am I?",
+                "answer": "Key"
+            },
+            {
+                "riddle": "I can be long or short; I can be grown or bought; I can be painted or left bare; I can be round or square. What am I?",
+                "answer": "Nail"
+            },
+            {
+                "riddle": "I have lakes with no water, mountains with no stone, and cities with no buildings. What am I?",
+                "answer": "Map"
+            },
+            {
+                "riddle": "I fly without wings. I cry without eyes. Wherever I go, darkness flies. What am I?",
+                "answer": "Wind"
+            },
+            {
+                "riddle": "I go in hard, come out soft, and am never the same. What am I?",
+                "answer": "Chewing gum"
+            }
+        ]
+    }
+]
