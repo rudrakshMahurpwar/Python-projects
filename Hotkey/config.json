@@ -1,8 +1,0 @@
-{
-    "ctrl+alt+t": "cmd.exe",
-    "ctrl+alt+n": "notepad.exe",
-    "ctrl+alt+v": "code",
-    "ctrl+alt+f": "C:/Users/HP/Documents",
-    "ctrl+alt+g": "chrome:https://chat.openai.com|Default",
-    "ctrl+alt+m": "brave:https://github.com|Profile 4"
-}
